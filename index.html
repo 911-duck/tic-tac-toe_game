@@ -1,0 +1,587 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(14, 51, 49)
+        }
+
+        .section-menu {
+            position: relative;
+            background-color: rgb(22, 84, 80);
+            background-image: url('img/Group 285.png');
+            background-repeat: no-repeat;
+            background-size: 90%;
+            background-position: 53% 80%;
+            height: 400px;
+            width: 500px;
+            padding: 60px 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: column;
+            animation: section-menu_Anim 1s ease-in-out 0s 1 forwards running;
+            overflow: hidden;
+            transition: box-shadow 1s;
+        }
+
+        @keyframes section-menu_Anim {
+            0% {
+                padding: 0px 40px 1000px 40px;
+            }
+
+            100% {
+                padding: 60px 40px;
+            }
+        }
+
+        .section-menu__title {
+            font-size: 60px;
+            color: rgb(255, 0, 0);
+            transition: all 0.5s;
+
+        }
+
+        .section-menu__play,
+        .section-menu__settings {
+            z-index: 3;
+            font-size: 30px;
+            width: 47%;
+            height: 24%;
+            background-color: rgb(22, 84, 80);
+            align-items: center;
+            justify-content: center;
+            border: none;
+            overflow: none;
+            outline: none;
+            background-image: url('img/Group\ 279.png');
+            background-size: 93%;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            color: rgb(212, 212, 212);
+            transition: all 0.5s;
+        }
+
+        .hidden {
+            opacity: 0;
+        }
+
+        .section-menu__play:hover,
+        .section-menu__settings:hover {
+            opacity: 0.8;
+        }
+
+        .section-menu__cleaner {
+            z-index: 5;
+            top: -80%;
+            right: -40%;
+            position: absolute;
+            width: 40%;
+            height: 80%;
+            background-image: url('img/Group\ 290.png');
+            background-size: 100%;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            transform: rotate(-45deg);
+            transition: all 2s;
+        }
+
+        .matrix {
+            display: none;
+            width: 78%;
+            height: 90%;
+            position: absolute;
+            top: 50%;
+            left: 51%;
+            transform: translateX(-50%) translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .matrix__floors {
+            width: 100%;
+            height: 30%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .matrix__objects {
+            width: 30%;
+            height: 100%;
+            transition: all 0.5s;
+        }
+
+        .section-menu__win {
+            position: absolute;
+            font-size: 40px;
+            transform: rotate(10deg) translateX(-50%) translateY(-50%) scale(0);
+            background-image: url('img/Group\ 289.png');
+            background-size: 100%;
+            background-position: 50% 50%;
+            top: 50%;
+            left: 50%;
+            color: red;
+            transition: all 0.5s;
+        }
+
+        .section-menu__settings-box {
+            bottom: -40%;
+            z-index: 4;
+            position: absolute;
+            width: 50%;
+            height: 40%;
+            background-image: url('img/Group\ 296.png');
+            background-repeat: no-repeat;
+            background-size: 100%;
+            background-position: 50% 50%;
+            transition: all 1s;
+        }
+
+        .section-menu__back {
+            color: white;
+        }
+
+        .section-menu__music {
+            position: absolute;
+            top: 25%;
+            right: 12%;
+            width: 30%;
+            height: 50%;
+            background-image: url('img/Group\ 293.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: 50% 50%;
+        }
+    </style>
+    <!-- Yandex Games SDK -->
+    <!-- <script src="/sdk.js"></script>
+    <script>
+        YaGames
+            .init()
+            .then(ysdk => {
+                console.log('Yandex SDK initialized');
+                window.ysdk = ysdk;
+            });
+    </script> -->
+</head>
+
+<body>
+    <section class="section-menu">
+        <h1 class="section-menu__title"><span style="color: blue;">Tic-tac-</span>toe</h1>
+        <button class="section-menu__play">play</button>
+        <button class="section-menu__settings">settings</button>
+        <div class="section-menu__cleaner"></div>
+        <div class="section-menu__matrix matrix">
+            <div class="matrix__floors">
+                <div class="matrix__objects"></div>
+                <div class="matrix__objects"></div>
+                <div class="matrix__objects"></div>
+            </div>
+            <div class="matrix__floors">
+                <div class="matrix__objects"></div>
+                <div class="matrix__objects"></div>
+                <div class="matrix__objects"></div>
+            </div>
+            <div class="matrix__floors">
+                <div class="matrix__objects"></div>
+                <div class="matrix__objects"></div>
+                <div class="matrix__objects"></div>
+            </div>
+        </div>
+        <div class="section-menu__cleaner"></div>
+        <h1 class="section-menu__win"></h1>
+        <div class="section-menu__settings-box">
+            <span class="section-menu__back"><-back< /span>
+                    <div class="section-menu__music"></div>
+        </div>
+    </section>
+
+    <script>
+        let menu = document.querySelector(".section-menu")
+        let menuTitle = document.querySelector(".section-menu__title")
+        let playButton = document.querySelector(".section-menu__play")
+        let settingsButton = document.querySelector(".section-menu__settings")
+        let cleanerAnimationObject = document.querySelector(".section-menu__cleaner")
+
+        let red_or_blue = false
+        let matrix = [
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0]
+        ]
+
+        const start = new Audio('sounds/start.mp3')
+        const clickS = new Audio('sounds/сlick.mp3')
+        const win = new Audio('sounds/win.mp3')
+
+        start.volume = 1
+        start.currentTime = 0
+        start.loop = false
+
+        clickS.volume = 1
+        clickS.currentTime = 0
+        clickS.loop = false
+
+        win.volume = 1
+        win.currentTime = 0
+        win.loop = false
+
+        let mute = false
+
+        start.currentTime = 0
+        //start.play()
+
+        function checkWin() {
+            for (let i = 0; i < 3; i++) {
+                let st = false
+                for (let j = 0; j < 3; j++) {
+                    if (matrix[i][j] != "r") {
+                        st = true
+                    }
+                }
+                if (st == false) {
+                    return "red won"
+                }
+            }
+            for (let i = 0; i < 3; i++) {
+                let st = false
+                for (let j = 0; j < 3; j++) {
+                    if (matrix[j][i] != "r") {
+                        st = true
+                    }
+                }
+                if (st == false) {
+                    return "red won"
+                }
+            }
+            let flag1 = false
+            for (let j = 0; j < 3; j++) {
+                if (matrix[j][j] != "r") {
+                    flag1 = true
+                }
+            }
+            if (flag1 == false) {
+                return "red won"
+            }
+            let flag2 = false
+            for (let j = 0; j < 3; j++) {
+                if (matrix[2 - j][j] != "r") {
+                    flag2 = true
+                }
+            }
+            if (flag2 == false) {
+                return "red won"
+            }
+
+            for (let i = 0; i < 3; i++) {
+                let st = false
+                for (let j = 0; j < 3; j++) {
+                    if (matrix[i][j] != "b") {
+                        st = true
+                    }
+                }
+                if (st == false) {
+                    return "blue won"
+                }
+            }
+            for (let i = 0; i < 3; i++) {
+                let st = false
+                for (let j = 0; j < 3; j++) {
+                    if (matrix[j][i] != "b") {
+                        st = true
+                    }
+                }
+                if (st == false) {
+                    return "blue won"
+                }
+            }
+            let flag3 = false
+            for (let j = 0; j < 3; j++) {
+                if (matrix[j][j] != "b") {
+                    flag3 = true
+                }
+            }
+            if (flag3 == false) {
+                return "blue won"
+            }
+            let flag4 = false
+            for (let j = 0; j < 3; j++) {
+                if (matrix[2 - j][j] != "b") {
+                    flag4 = true
+                }
+            }
+            if (flag4 == false) {
+                return "blue won"
+            }
+            let h = 0
+            for (let i = 0; i < 9; i++) {
+                if (matrix[Math.floor(i / 3)][i % 3] == 0) {
+                    h++
+                }
+            }
+            if (h == 0) return "nobody won"
+        }
+
+        function exit() {
+            start.currentTime = 0
+            // start.play()
+            menu.style.boxShadow = "none"
+            cleanerAnimationObject.style.top = "-80%"
+            cleanerAnimationObject.style.right = "-40%"
+            setTimeout(() => {
+                for (let i = 0; i < 9; i++) {
+                    document.querySelectorAll(".matrix__objects")[i].style.backgroundImage = "none"
+                }
+                menu.style.backgroundImage = "none"
+                menu.style.backgroundImage = "url('img/Group 285.png')"
+                menu.style.backgroundRepeat = "no-repeat"
+                menu.style.backgroundSize = "90%"
+                menu.style.backgroundPosition = "53% 80%"
+            }, 500);
+            setTimeout(() => {
+                document.querySelector(".matrix").style.display = "none"
+                menuTitle.style.display = "flex"
+                playButton.style.display = "flex"
+                settingsButton.style.display = "flex"
+                menu = document.querySelector(".section-menu")
+                menuTitle = document.querySelector(".section-menu__title")
+                playButton = document.querySelector(".section-menu__play")
+                settingsButton = document.querySelector(".section-menu__settings")
+                cleanerAnimationObject = document.querySelector(".section-menu__cleaner")
+                menuTitle.style.opacity = ""
+                playButton.style.opacity = ""
+                settingsButton.style.opacity = ""
+                playButton.addEventListener('click', playButtonEvent)
+                settingsButton.addEventListener('click', settingsButtonEvent)
+
+            }, 2000);
+        }
+
+        function click(e) {
+            clickS.currentTime = 0
+            clickS.play()
+
+            if (red_or_blue == false) {
+                e.target.style.backgroundImage = "url('img/Ellipse 6.png')"
+                for (let i = 0; i < 9; i++) {
+                    if (document.querySelectorAll('.matrix__objects')[i] == e.target) {
+                        matrix[Math.floor(i / 3)][i % 3] = "r"
+                    }
+                }
+            } else {
+                e.target.style.backgroundImage = "url('img/Group 281.png')"
+                for (let i = 0; i < 9; i++) {
+                    if (document.querySelectorAll('.matrix__objects')[i] == e.target) {
+                        matrix[Math.floor(i / 3)][i % 3] = "b"
+                    }
+                }
+            }
+            e.target.style.backgroundRepeat = "no-repeat"
+            e.target.style.backgroundSize = "70%"
+            e.target.style.backgroundPosition = "50% 50%"
+            console.log(1)
+            e.target.removeEventListener('click', click)
+            red_or_blue = !red_or_blue
+            if (red_or_blue == false) {
+                menu.style.boxShadow = "0px 0px 20px 1px red"
+            } else {
+                menu.style.boxShadow = "0px 0px 20px 1px blue"
+            }
+            if (checkWin() == "red won") {
+                win.currentTime = 0
+                win.play()
+
+                menu.style.boxShadow = "none"
+                for (let i = 0; i < 9; i++) {
+                    document.querySelectorAll(".matrix__objects")[i].removeEventListener("click", click)
+                }
+                document.querySelector(".section-menu__win").innerText = "red won"
+                document.querySelector(".section-menu__win").style.color = "red"
+                document.querySelector(".section-menu__win").style.transform = "rotate(10deg) translateX(-50%) translateY(-50%) scale(1.3)"
+                setTimeout(() => {
+                    document.querySelector(".section-menu__win").style.transform = "rotate(10deg) translateX(-50%) translateY(-50%) scale(0)"
+                    matrix = [
+                        [0, 0, 0],
+                        [0, 0, 0],
+                        [0, 0, 0]
+                    ]
+                    exit()
+                }, 5000);
+            } else if (checkWin() == "blue won") {
+                win.currentTime = 0
+                win.play()
+                menu.style.boxShadow = "none"
+                for (let i = 0; i < 9; i++) {
+                    document.querySelectorAll(".matrix__objects")[i].removeEventListener("click", click)
+                }
+                document.querySelector(".section-menu__win").innerText = "blue won"
+                document.querySelector(".section-menu__win").style.color = "blue"
+                document.querySelector(".section-menu__win").style.transform = "rotate(10deg) translateX(-50%) translateY(-50%) scale(1.3)"
+                setTimeout(() => {
+                    document.querySelector(".section-menu__win").style.transform = "rotate(10deg) translateX(-50%) translateY(-50%) scale(0)"
+                    matrix = [
+                        [0, 0, 0],
+                        [0, 0, 0],
+                        [0, 0, 0]
+                    ]
+                    exit()
+                }, 5000);
+            } else if (checkWin() == "nobody won") {
+                win.currentTime = 0
+                win.play()
+                menu.style.boxShadow = "none"
+                for (let i = 0; i < 9; i++) {
+                    document.querySelectorAll(".matrix__objects")[i].removeEventListener("click", click)
+                }
+                document.querySelector(".section-menu__win").innerText = "nobody won"
+                document.querySelector(".section-menu__win").style.color = "yellow"
+                document.querySelector(".section-menu__win").style.transform = "rotate(10deg) translateX(-50%) translateY(-50%) scale(1.3)"
+                setTimeout(() => {
+                    document.querySelector(".section-menu__win").style.transform = "rotate(10deg) translateX(-50%) translateY(-50%) scale(0)"
+                    matrix = [
+                        [0, 0, 0],
+                        [0, 0, 0],
+                        [0, 0, 0]
+                    ]
+                    exit()
+                }, 5000);
+            }
+        }
+
+        function playButtonEvent(e) {
+            playButton.removeEventListener('click', playButtonEvent)
+            settingsButton.removeEventListener('click', settingsButtonEvent)
+
+            console.log(2)
+            clickS.currentTime = 0
+
+            clickS.play()
+            cleanerAnimationObject.style.top = "180%"
+            cleanerAnimationObject.style.right = "140%"
+            setTimeout(() => {
+                start.currentTime = 0
+                start.play()
+                menuTitle.style.opacity = "0"
+                playButton.style.opacity = "0"
+                settingsButton.style.opacity = "0"
+                menu.style.backgroundImage = "none"
+                menu.style.backgroundImage = "url('img/Group 291.png')"
+                menu.style.backgroundRepeat = "no-repeat"
+                menu.style.backgroundSize = "70%"
+                menu.style.backgroundPosition = "50% 50%"
+            }, 500);
+            setTimeout(() => {
+                menuTitle.style.display = "none"
+                playButton.style.display = "none"
+                settingsButton.style.display = "none"
+                document.querySelector(".matrix").style.display = "flex"
+                for (let i = 0; i < 9; i++) {
+                    if (red_or_blue == false) {
+                        menu.style.boxShadow = "0px 0px 20px 1px red"
+                    } else {
+                        menu.style.boxShadow = "0px 0px 20px 1px blue"
+                    }
+                    document.querySelectorAll(".matrix__objects")[i].addEventListener("click", click)
+                }
+                console.log(3)
+            }, 2000);
+        }
+
+        function music(e) {
+            clickS.currentTime = 0
+            clickS.play()
+            mute = !mute
+            if (mute == false) {
+                start.volume = 1
+                win.volume = 1
+                clickS.volume = 1
+                document.querySelector('.section-menu__music').style.backgroundImage = "url('img/Group 293.png')"
+            } else {
+                start.volume = 0
+                win.volume = 0
+                clickS.volume = 0
+                document.querySelector('.section-menu__music').style.backgroundImage = "url('img/Group 294.png')"
+            }
+        }
+
+        function exitSettings(e) {
+            clickS.currentTime = 0
+            clickS.play()
+            start.currentTime = 0
+            start.play()
+            settingsButton.addEventListener('click', settingsButtonEvent)
+            document.querySelector('.section-menu__settings-box').style.bottom = "-40%"
+            document.querySelector('.section-menu__settings-box').style.transform = "translateY(0%)"
+            document.querySelector('.section-menu__back').removeEventListener('click', exitSettings)
+            document.querySelector('.section-menu__music').removeEventListener('click', music)
+
+        }
+
+        function settingsButtonEvent(e) {
+            clickS.currentTime = 0
+            clickS.play()
+            start.currentTime = 0
+            start.play()
+            settingsButton.removeEventListener('click', settingsButtonEvent)
+            document.querySelector('.section-menu__settings-box').style.bottom = "50%"
+            document.querySelector('.section-menu__settings-box').style.transform = "translateY(50%)"
+            document.querySelector('.section-menu__music').addEventListener('click', music)
+            document.querySelector('.section-menu__back').addEventListener('click', exitSettings)
+        }
+
+        playButton.addEventListener('click', playButtonEvent)
+        settingsButton.addEventListener('click', settingsButtonEvent)
+
+        document.querySelector('body').addEventListener('mouseout', e => {
+            if (mute == false) {
+                start.volume = 0
+                win.volume = 0
+                clickS.volume = 0
+            }
+        })
+
+        document.querySelector('body').addEventListener('mouseover', e => {
+            if (mute == false) {
+                start.volume = 1
+                win.volume = 1
+                clickS.volume = 1
+            }
+        })
+
+        document.addEventListener('mousemove', e => {
+            const x = e.clientX; // Координата X курсора
+            const y = e.clientY; // Координата Y курсора
+            const body = document.querySelector('body')
+            menu.style.left = `${(window.getComputedStyle(body).width.slice(0, -2) / 2 - x) / 8}px`
+            menu.style.top = `${(window.getComputedStyle(body).height.slice(0, -2) / 2 - y) / 8}px`
+            menu.style.transform = `perspective(1000px) rotateX(${y / (window.getComputedStyle(body).height.slice(0, -2)) * -10 + 5}deg) rotateY(${x / (window.getComputedStyle(body).width.slice(0, -2)) * 20 - 10}deg)`
+        })
+    </script>
+
+</body>
+
+</html>
